@@ -1,0 +1,8 @@
+{
+  "redhatDependencyAnalytics.excludePaths": [
+    "**/.next/**"
+  ]
+}
+
+
+
