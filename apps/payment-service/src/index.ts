@@ -3,8 +3,20 @@ import { Hono } from "hono";
 
 const app = new Hono();
 
-app.get("/", (c) => {
-  return c.text("Hello Hono!");
+export const formatUptime = (seconds: number): string => {
+  if (seconds < 60) return `${Math.floor(seconds)} seconds`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours`;
+  return `${Math.floor(seconds / 86400)} days`;
+};
+
+app.get("/health", (c) => {
+  return c.json({
+    status: "ok",
+    uptime: process.uptime(),
+    formatted: formatUptime(process.uptime()),
+    timestamp: new Date().toLocaleDateString(),
+  });
 });
 
 const start = async () => {
