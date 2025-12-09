@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  postgres-product-db:
+    image: postgres:latest
+    container_name: postgres-product-db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=rachmaninoff
+      - POSTGRES_DB=products
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/18/bin
+      - GOSU_VERSION=1.19
+      - LANG=en_US.utf8
+      - PG_MAJOR=18
+      - PG_VERSION=18.1-1.pgdg13+2
+      - PGDATA=/var/lib/postgresql/18/docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+volumes:
+  postgres-data:
