@@ -13,7 +13,9 @@
     "@repo/typescript-config": "*",
     "@types/node": "^24.10.1"
   },
-  ".": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
     "mongoose": "^9.0.1"
   }
