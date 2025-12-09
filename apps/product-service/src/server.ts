@@ -1,7 +1,10 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
 import { shouldBeUser } from "./middleware/authMiddleware";
+
+import productRouter from "./routes/product.route";
+import categoryRouter from "./routes/category.route";
 
 const app = express();
 
@@ -12,6 +15,7 @@ app.use(
   })
 );
 
+app.use(express.json());
 app.use(clerkMiddleware());
 
 app.get("/health", (req: Request, res: Response) => {
@@ -25,14 +29,25 @@ app.get("/health", (req: Request, res: Response) => {
 app.get("/test", shouldBeUser, (req: Request, res: Response) => {
   const response = {
     message: "Product service is authenticated!",
-    userId: req.userId
-  }
-  console.log(response)
+    userId: req.userId,
+  };
+  console.log(response);
   return res.status(200).json(response);
 });
 
-app.listen(8003, () => {
+app.use("/products", productRouter);
+app.use("/categories", categoryRouter);
+
+//ERROR HANDLER
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  return res
+    .status(err.status || 500)
+    .json({ message: err.message || "Internal Server Error" });
+});
+
+app.listen(8000, () => {
   console.log(
-    "Product service is running on port 8003 from an express framework"
+    "Product service is running on port 8000 from an express framework"
   );
 });

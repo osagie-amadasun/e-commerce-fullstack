@@ -1,7 +1,8 @@
 {
   "redhatDependencyAnalytics.excludePaths": [
     "**/.next/**"
-  ]
+  ],
+  "prisma.pinToPrisma6": false
 }
 
 
