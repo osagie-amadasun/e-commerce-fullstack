@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { clerkMiddleware, getAuth } from "@clerk/express";
 import { shouldBeUser } from "./middleware/authMiddleware";
-
+import { connectProductDB } from "@repo/product-db";
 import productRouter from "./routes/product.route";
 import categoryRouter from "./routes/category.route";
 
@@ -40,14 +40,24 @@ app.use("/categories", categoryRouter);
 
 //ERROR HANDLER
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
+  console.error(err);
   return res
     .status(err.status || 500)
     .json({ message: err.message || "Internal Server Error" });
 });
 
-app.listen(8000, () => {
-  console.log(
-    "Product service is running on port 8000 from an express framework"
-  );
-});
+const start = async () => {
+  try {
+    await connectProductDB();
+    app.listen(8000, () => {
+      console.log(
+        "Product service is running on port 8000 from an express framework"
+      );
+    });
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+};
+
+start();

@@ -1,11 +1,17 @@
 import { Request, Response } from "express";
-import { prisma, Prisma } from "@repo/product-db";
+import { Product, productSchema } from "@repo/product-db";
 
 export const createProduct = async (req: Request, res: Response) => {
-  const data: Prisma.ProductCreateInput = req.body;
-
-  const product = await prisma.product.create({ data });
-  res.status(201).json(product);
+  const data = req.body;
+  try {
+    const newProduct = await Product.create(data);
+    res.status(201).json({
+      message: "product created successfully",
+      data: newProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create product", details: error });
+  }
 };
 export const updateProduct = async (req: Request, res: Response) => {};
 export const deleteProduct = async (req: Request, res: Response) => {};

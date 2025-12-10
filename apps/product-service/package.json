@@ -12,12 +12,14 @@
   "description": "",
   "dependencies": {
     "@clerk/express": "^1.7.54",
+    "@repo/product-db": "*",
     "cors": "^2.8.5",
     "express": "^5.2.1",
-    "tsx": "^4.21.0",
-    "@repo/product-db": "*"
+    "mongoose": "^9.0.1",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
+    "@repo/types": "*",
     "@repo/typescript-config": "*",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
