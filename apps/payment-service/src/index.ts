@@ -2,6 +2,7 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { shouldBeUser } from "./middleware/authMiddleware.js";
+import stripe from "../utils/stripe.js";
 
 const app = new Hono();
 
@@ -12,6 +13,8 @@ export const formatUptime = (seconds: number): string => {
   return `${Math.floor(seconds / 86400)} days`;
 };
 
+app.use("*", clerkMiddleware());
+
 app.get("/health", (c) => {
   return c.json({
     status: "ok",
@@ -20,13 +23,24 @@ app.get("/health", (c) => {
     timestamp: new Date().toLocaleDateString(),
   });
 });
-app.use("*", clerkMiddleware());
+app.post("/create-stripe-product", async (c) => {
+  const res = await stripe.products.create({
+    id: "123",
+    name: "test product",
+    default_price_data: {
+      currency: "usd",
+      unit_amount: 10 * 1000,
+    }
+  });
+  return c.json(res);
+});
 app.get("/test", shouldBeUser, (c) => {
   return c.json({
     message: "Payment service is authenticated!!",
     userId: c.get("userId")
   });
 });
+
 
 const start = async () => {
   try {
