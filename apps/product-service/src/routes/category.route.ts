@@ -9,8 +9,8 @@ import {
 const router: Router = Router();
 
 router.post("/", createCategory);
-router.put("/", updateCategory);
-router.delete("/", deleteCategory);
+router.put("/:id", updateCategory);
+router.delete("/:id", deleteCategory);
 router.get("/", getCategories);
 
 export default router;

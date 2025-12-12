@@ -3,7 +3,6 @@ import { Schema } from "mongoose";
 
 const ProductSchema = new Schema(
   {
-    _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
     name: { type: String, required: true },
     shortDescription: { type: String, required: true },
     description: { type: String, required: true },
